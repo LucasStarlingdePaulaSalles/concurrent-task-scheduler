@@ -5,5 +5,5 @@ Este repositório contém o código escrito em C++ que implementa a solução do
 
 Autores:
 
-    @lucasclopesr
-    @LucasStarlingdePaulaSalles
+    @[lucasclopesr](https://github.com/lucasclopesr)
+    @[LucasStarlingdePaulaSalles](https://github.com/LucasStarlingdePaulaSalles)

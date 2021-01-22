@@ -66,6 +66,7 @@
 /* Global variable */
 int thread_count = 9;
 pthread_mutex_t lock;
+pthread_mutex_t lock_queue;
 std::vector<int> queue;
 pthread_cond_t can_use[RAJ];
 bool in_use = false;
@@ -77,6 +78,7 @@ void *check(void* rank);
 int main(int argc, char* argv[]) {
   long thread;
   pthread_mutex_init(&lock, NULL); // Declara o lock para o forno
+  pthread_mutex_init(&lock_queue, NULL); // Declara o lock para a fila
 
   // Declara as threads correspondentes a cada personagem (e.g., thread_handles[0] = Sheldon)
   pthread_t thread_handles[thread_count];
@@ -86,28 +88,29 @@ int main(int argc, char* argv[]) {
   
   // Cria thread correspondente ao Raj
   pthread_create(&thread_handles[thread_count - 1], NULL, check, (void*) thread);
-
   for (thread = 0; thread < thread_count; thread++)
     pthread_join(thread_handles[thread], NULL);
 
   pthread_mutex_destroy(&lock);
+  pthread_mutex_destroy(&lock_queue);
   return 0;
 }
 
 int nxt = -1;
 
+
+
 void *enter_queue(void* rank) {
   long my_rank = (long) rank;
-
+  pthread_mutex_lock(&lock_queue);
   // Personagem declara que quer utilizar o forno!
   std::cout << my_rank << " quer usar o forno" << std::endl;
   queue.push_back(my_rank);
   if( queue.size() == 1){
     nxt = my_rank;
   }
-  
+  pthread_mutex_unlock(&lock_queue);
   use_oven((void*)my_rank);
-
   return NULL;
 }
 
@@ -121,19 +124,26 @@ void *use_oven(void* rank) {
   }
   in_use = true;
   std::cout << my_rank << " começa a esquentar algo" << std::endl;
-  sleep(2);
+  sleep(1);
   int next = -1;
 
+  pthread_mutex_lock(&lock_queue);
   queue.erase(queue.begin());
-  // next = queue.size() < 1 ? next : queue.front();
   next = (int)queue.size() > 0 ? queue.front() : next;
+  pthread_mutex_unlock(&lock_queue);
+
   nxt = next;
 
   std::cout<< "Prox: " << next << std::endl;
-  // sleep(3); // Comendo!
-  in_use = false;
+  in_use = false; //Comida fica pronta
+  int eat_time = 3 + (int)(drand48()*3);
+  int work_time = 3 + (int)(drand48()*3);
   pthread_mutex_unlock(&lock); // Libera o forno
-  pthread_cond_signal(&can_use[next]);
+  pthread_cond_signal(&can_use[next]); //Chama o proximo
+  std::cout << my_rank <<" Vai comer" << std::endl;  
+  sleep(eat_time); // Comendo!
+  std::cout << my_rank <<" Vai trabalhar" << std::endl;
+  sleep(work_time);
 
   return NULL;
 }

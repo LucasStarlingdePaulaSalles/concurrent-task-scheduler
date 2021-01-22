@@ -92,6 +92,7 @@ int OvenQueue::get_next(){
         if(node->with_so){
             this->_next = node->so_rank;
         }
+
         this->remove(node->rank);  
     } else {
         next_rank = this->_next;
@@ -128,10 +129,15 @@ void OvenQueue::remove(int target){
     Charecter *last = NULL;
 
     while (curr != NULL) { 
-        if(curr->rank == target){
+        if(curr->rank == target ){
+          if (last == NULL) {
+            this->_first = curr->next;
+          } else {
             last->next = curr->next;
-            delete(curr);
-            return;
+          }
+
+          delete(curr);
+          return;
         }
         last = curr;
         curr = curr->next; 

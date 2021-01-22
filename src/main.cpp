@@ -66,7 +66,9 @@
 /* Global variable */
 int thread_count = 9;
 pthread_mutex_t lock;
-std::vector <int> queue;
+std::vector<int> queue;
+pthread_cond_t can_use[RAJ];
+bool in_use = false;
 
 void *enter_queue(void* rank);
 void *use_oven(void* rank);
@@ -79,11 +81,11 @@ int main(int argc, char* argv[]) {
   // Declara as threads correspondentes a cada personagem (e.g., thread_handles[0] = Sheldon)
   pthread_t thread_handles[thread_count];
 
-  for (thread = 0; thread < thread_count-1; thread++)
+  for (thread = 0; thread < thread_count - 1; thread++)
     pthread_create(&thread_handles[thread], NULL, enter_queue, (void*) thread);
   
   // Cria thread correspondente ao Raj
-  pthread_create(&thread_handles[thread_count], NULL, check, (void*) thread);
+  pthread_create(&thread_handles[thread_count - 1], NULL, check, (void*) thread);
 
   for (thread = 0; thread < thread_count; thread++)
     pthread_join(thread_handles[thread], NULL);
@@ -92,12 +94,19 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
+int nxt = -1;
+
 void *enter_queue(void* rank) {
   long my_rank = (long) rank;
 
   // Personagem declara que quer utilizar o forno!
   std::cout << my_rank << " quer usar o forno" << std::endl;
-  //queue.push_back(my_rank);
+  queue.push_back(my_rank);
+  if( queue.size() == 1){
+    nxt = my_rank;
+  }
+  
+  use_oven((void*)my_rank);
 
   return NULL;
 }
@@ -106,14 +115,25 @@ void *use_oven(void* rank) {
   long my_rank = (long) rank;
 
   pthread_mutex_lock(&lock); // Cria lock para utilizar o forno
-
+  while ( in_use || my_rank != nxt)
+  {
+    pthread_cond_wait(&can_use[my_rank], &lock);
+  }
+  in_use = true;
   std::cout << my_rank << " começa a esquentar algo" << std::endl;
-  sleep(5);
+  sleep(2);
+  int next = -1;
 
+  queue.erase(queue.begin());
+  // next = queue.size() < 1 ? next : queue.front();
+  next = (int)queue.size() > 0 ? queue.front() : next;
+  nxt = next;
+
+  std::cout<< "Prox: " << next << std::endl;
+  // sleep(3); // Comendo!
+  in_use = false;
   pthread_mutex_unlock(&lock); // Libera o forno
-
-  std::cout << my_rank << " vai comer" << std::endl;
-  sleep(3); // Comendo!
+  pthread_cond_signal(&can_use[next]);
 
   return NULL;
 }

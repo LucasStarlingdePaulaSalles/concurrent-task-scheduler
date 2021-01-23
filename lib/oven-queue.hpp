@@ -2,6 +2,7 @@
 #define OVEN_QUEUE
 #include <iostream>
 #include <pthread.h>
+
 #define CHARECTERS 9
 #define SHELDON 0
 #define AMY 1
@@ -23,26 +24,31 @@ class Charecter {
         Charecter *next;
         Charecter(int);
         void join_so();
+        static std::string char_name(int);
 };
 
 class OvenQueue {
     public:
         int get_next();
-        void queue(int);
+        void push(int);
+        int size();
         OvenQueue();
+        ~OvenQueue();
+        void monitor();
         void print();
     private:
         int _size;
         int _next;
+        int _curr;
         bool _agents[CHARECTERS];
         Charecter *_first;
-        void add(int);
         void remove(int);
+        void add(int);
         void addCouple();
-        void monitor();
         bool nextHasPriority(int, int);
+        bool inDeadlock();
         pthread_mutex_t lock;
-        pthread_cond_t deadlock;
+        pthread_cond_t raj;
 };
 
 

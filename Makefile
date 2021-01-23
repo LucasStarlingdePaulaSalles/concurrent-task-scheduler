@@ -1,6 +1,6 @@
 IDIR=lib
 CC=g++
-CFLAGS=-g -Wall -lpthread
+CFLAGS=-g -Wall -lpthread -I$(IDIR)
 TFLAGS=-g -Wall -I$(IDIR)
 
 ODIR=obj
@@ -8,10 +8,10 @@ SDIR=src
 
 TARGET=main
 
-# _DEPS = SLR-parser.hpp grammar-constants.hpp
-# DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
+_DEPS = oven-queue.hpp
+DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o
+_OBJ = oven-queue.o main.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 
@@ -26,10 +26,10 @@ OBJ_T = $(patsubst %,$(ODIR)/%,$(_OBJ_T))
 
 
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
-	$(CC) -c -o $@ $< $(TFLAGS)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(TARGET): $(OBJ)
-	$(CC) -o $@ $^ $(TFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS)
 
 
 test:

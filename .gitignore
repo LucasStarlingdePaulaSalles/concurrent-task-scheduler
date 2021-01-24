@@ -32,6 +32,5 @@
 *.app
 main
 test
-saida*
 
 .vscode

@@ -1,0 +1,414 @@
+Kripke quer usar o forno
+Kripke começa a esquentar algo
+Stuart quer usar o forno
+Amy quer usar o forno
+Sheldon quer usar o forno
+Howard quer usar o forno
+dones: 4
+Bernadette quer usar o forno
+Leonard quer usar o forno
+Penny quer usar o forno
+
+Raj monitora a situação: 
+size = 7
+6 1 0 2 3 4 5 
+
+Raj verifica que há deadlock, liberando: Leonard
+dones: 8
+Kripke vai comer
+Leonard começa a esquentar algo
+Leonard vai comer
+Penny começa a esquentar algo
+Penny vai comer
+Amy começa a esquentar algo
+Kripke Voltou para o trabalho
+Amy vai comer
+Sheldon começa a esquentar algo
+Leonard Voltou para o trabalho
+Sheldon vai comer
+Howard começa a esquentar algo
+
+Raj monitora a situação: 
+size = 1
+6 
+
+Raj verifica que não há deadlock
+dones: 8
+Penny Voltou para o trabalho
+Howard vai comer
+Bernadette começa a esquentar algo
+Kripke quer usar o forno
+Bernadette vai comer
+Stuart começa a esquentar algo
+Leonard quer usar o forno
+Amy Voltou para o trabalho
+Sheldon Voltou para o trabalho
+Stuart vai comer
+Leonard começa a esquentar algo
+Leonard vai comer
+Kripke começa a esquentar algo
+Penny quer usar o forno
+Howard Voltou para o trabalho
+Kripke vai comer
+Penny começa a esquentar algo
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 11
+Amy quer usar o forno
+Penny vai comer
+Amy começa a esquentar algo
+Bernadette Voltou para o trabalho
+Amy vai comer
+Sheldon quer usar o forno
+Sheldon começa a esquentar algo
+Stuart Voltou para o trabalho
+Leonard Voltou para o trabalho
+Kripke Voltou para o trabalho
+Sheldon vai comer
+Howard quer usar o forno
+Howard começa a esquentar algo
+Bernadette quer usar o forno
+Howard vai comer
+Bernadette começa a esquentar algo
+Amy Voltou para o trabalho
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 15
+Bernadette vai comer
+Stuart quer usar o forno
+Stuart começa a esquentar algo
+Penny Voltou para o trabalho
+Stuart vai comer
+Kripke quer usar o forno
+Kripke começa a esquentar algo
+Leonard quer usar o forno
+Kripke vai comer
+Leonard começa a esquentar algo
+Sheldon Voltou para o trabalho
+Howard Voltou para o trabalho
+Bernadette Voltou para o trabalho
+Leonard vai comer
+Amy quer usar o forno
+Amy começa a esquentar algo
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 19
+Stuart Voltou para o trabalho
+Penny quer usar o forno
+Amy vai comer
+Penny começa a esquentar algo
+Kripke Voltou para o trabalho
+Bernadette quer usar o forno
+Penny vai comer
+Bernadette começa a esquentar algo
+Bernadette vai comer
+Sheldon quer usar o forno
+Sheldon começa a esquentar algo
+Howard quer usar o forno
+Leonard Voltou para o trabalho
+Amy Voltou para o trabalho
+Kripke quer usar o forno
+Sheldon vai comer
+Howard começa a esquentar algo
+Penny Voltou para o trabalho
+
+Raj monitora a situação: 
+size = 1
+7 
+
+Raj verifica que não há deadlock
+dones: 24
+Howard vai comer
+Kripke começa a esquentar algo
+Stuart quer usar o forno
+Kripke vai comer
+Stuart começa a esquentar algo
+Bernadette Voltou para o trabalho
+Stuart vai comer
+Penny quer usar o forno
+Penny começa a esquentar algo
+Leonard quer usar o forno
+Amy quer usar o forno
+Penny vai comer
+Leonard começa a esquentar algo
+Sheldon Voltou para o trabalho
+Howard Voltou para o trabalho
+Kripke Voltou para o trabalho
+Leonard vai comer
+Amy começa a esquentar algo
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 28
+Bernadette quer usar o forno
+Bernadette começa a esquentar algo
+Amy vai comer
+Penny Voltou para o trabalho
+Bernadette vai comer
+Kripke quer usar o forno
+Kripke começa a esquentar algo
+Stuart Voltou para o trabalho
+Howard quer usar o forno
+Kripke vai comer
+Howard começa a esquentar algo
+Sheldon quer usar o forno
+Howard vai comer
+Sheldon começa a esquentar algo
+Leonard Voltou para o trabalho
+Amy Voltou para o trabalho
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 32
+Sheldon vai comer
+Bernadette Voltou para o trabalho
+Stuart quer usar o forno
+Stuart começa a esquentar algo
+Penny quer usar o forno
+Kripke Voltou para o trabalho
+Stuart vai comer
+Penny começa a esquentar algo
+Amy quer usar o forno
+Howard Voltou para o trabalho
+Penny vai comer
+Amy começa a esquentar algo
+Leonard quer usar o forno
+Amy vai comer
+Leonard começa a esquentar algo
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 36
+Stuart Voltou para o trabalho
+Sheldon Voltou para o trabalho
+Bernadette quer usar o forno
+Leonard vai comer
+Bernadette começa a esquentar algo
+Bernadette vai comer
+Kripke quer usar o forno
+Kripke começa a esquentar algo
+Penny Voltou para o trabalho
+Amy Voltou para o trabalho
+Howard quer usar o forno
+Kripke vai comer
+Howard começa a esquentar algo
+Stuart quer usar o forno
+Sheldon quer usar o forno
+Howard vai comer
+Sheldon começa a esquentar algo
+
+Raj monitora a situação: 
+size = 1
+6 
+
+Raj verifica que não há deadlock
+dones: 41
+Sheldon vai comer
+Stuart começa a esquentar algo
+Leonard Voltou para o trabalho
+Stuart vai comer
+Penny quer usar o forno
+Penny começa a esquentar algo
+Amy quer usar o forno
+Bernadette Voltou para o trabalho
+Kripke Voltou para o trabalho
+Penny vai comer
+Amy começa a esquentar algo
+Howard Voltou para o trabalho
+Amy vai comer
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 43
+Sheldon Voltou para o trabalho
+Stuart Voltou para o trabalho
+Leonard quer usar o forno
+Leonard começa a esquentar algo
+Howard quer usar o forno
+Kripke quer usar o forno
+Penny Voltou para o trabalho
+Amy Voltou para o trabalho
+Bernadette quer usar o forno
+Leonard vai comer
+Howard começa a esquentar algo
+Howard vai comer
+Bernadette começa a esquentar algo
+Bernadette vai comer
+Kripke começa a esquentar algo
+Leonard Voltou para o trabalho
+Kripke vai comer
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 47
+Sheldon quer usar o forno
+Sheldon começa a esquentar algo
+Stuart quer usar o forno
+Sheldon vai comer
+Stuart começa a esquentar algo
+Penny quer usar o forno
+Amy quer usar o forno
+Bernadette Voltou para o trabalho
+Stuart vai comer
+Penny começa a esquentar algo
+Leonard quer usar o forno
+Howard Voltou para o trabalho
+Kripke Voltou para o trabalho
+Penny vai comer
+Leonard começa a esquentar algo
+Sheldon Voltou para o trabalho
+Leonard vai comer
+Amy começa a esquentar algo
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 52
+Amy vai comer
+Howard quer usar o forno
+Howard começa a esquentar algo
+Bernadette quer usar o forno
+Stuart Voltou para o trabalho
+Howard vai comer
+Bernadette começa a esquentar algo
+Kripke quer usar o forno
+Leonard Voltou para o trabalho
+Bernadette vai comer
+Kripke começa a esquentar algo
+Sheldon quer usar o forno
+Penny Voltou para o trabalho
+Kripke vai comer
+Sheldon começa a esquentar algo
+Sheldon vai comer
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 56
+Stuart quer usar o forno
+Stuart começa a esquentar algo
+Leonard quer usar o forno
+Amy Voltou para o trabalho
+Stuart vai comer
+Leonard começa a esquentar algo
+Howard Voltou para o trabalho
+Kripke Voltou para o trabalho
+Leonard vai comer
+Penny quer usar o forno
+Penny começa a esquentar algo
+Bernadette Voltou para o trabalho
+Penny vai comer
+Sheldon Voltou para o trabalho
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 59
+Amy quer usar o forno
+Amy começa a esquentar algo
+Bernadette quer usar o forno
+Kripke quer usar o forno
+Stuart Voltou para o trabalho
+Amy vai comer
+Bernadette começa a esquentar algo
+Sheldon quer usar o forno
+Howard quer usar o forno
+Leonard Voltou para o trabalho
+Bernadette vai comer
+Howard começa a esquentar algo
+Penny Voltou para o trabalho
+Howard vai comer
+Sheldon começa a esquentar algo
+Sheldon vai comer
+Kripke começa a esquentar algo
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 64
+Bernadette Voltou para o trabalho
+Kripke vai comer
+Stuart quer usar o forno
+Stuart começa a esquentar algo
+Amy Voltou para o trabalho
+Leonard quer usar o forno
+Stuart vai comer
+Leonard começa a esquentar algo
+Penny quer usar o forno
+Leonard vai comer
+Penny começa a esquentar algo
+Howard Voltou para o trabalho
+Penny vai comer
+Bernadette quer usar o forno
+Bernadette começa a esquentar algo
+Sheldon Voltou para o trabalho
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+dones: 68
+Bernadette vai comer
+Kripke Voltou para o trabalho
+Stuart Voltou para o trabalho
+Leonard Voltou para o trabalho
+Amy quer usar o forno
+Amy começa a esquentar algo
+Howard quer usar o forno
+Amy vai comer
+Sheldon quer usar o forno
+Howard começa a esquentar algo
+Penny Voltou para o trabalho
+Howard vai comer
+Sheldon começa a esquentar algo
+Stuart quer usar o forno
+Bernadette Voltou para o trabalho
+Sheldon vai comer
+Stuart começa a esquentar algo
+
+Raj monitora a situação: 
+size = 0
+
+
+Raj verifica que não há deadlock
+Stuart vai comer
+Amy Voltou para o trabalho
+Howard Voltou para o trabalho
+Sheldon Voltou para o trabalho
+Stuart Voltou para o trabalho

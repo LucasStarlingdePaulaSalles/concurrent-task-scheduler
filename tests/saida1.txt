@@ -1,0 +1,39 @@
+Kripke quer usar o forno
+Kripke começa a esquentar algo
+Amy quer usar o forno
+Sheldon quer usar o forno
+dones: 3
+Stuart quer usar o forno
+Bernadette quer usar o forno
+Howard quer usar o forno
+Penny quer usar o forno
+Leonard quer usar o forno
+
+Raj monitora a situação: 
+size = 7
+1 0 6 3 2 5 4 
+
+Raj verifica que há deadlock, liberando: Penny
+Kripke vai comer
+Penny começa a esquentar algo
+Penny vai comer
+Leonard começa a esquentar algo
+Leonard vai comer
+Amy começa a esquentar algo
+Kripke Voltou para o trabalho
+Amy vai comer
+Sheldon começa a esquentar algo
+Penny Voltou para o trabalho
+Sheldon vai comer
+Bernadette começa a esquentar algo
+Leonard Voltou para o trabalho
+Bernadette vai comer
+Howard começa a esquentar algo
+Howard vai comer
+Stuart começa a esquentar algo
+Amy Voltou para o trabalho
+Sheldon Voltou para o trabalho
+Stuart vai comer
+Bernadette Voltou para o trabalho
+Howard Voltou para o trabalho
+Stuart Voltou para o trabalho

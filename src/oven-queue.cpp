@@ -4,26 +4,27 @@ Charecter::Charecter(int char_rank){
     this->rank = char_rank;
     this->next = NULL;
     if(char_rank == SHELDON || char_rank == HOWARD || char_rank == LEONARD){
-        this->so_rank = char_rank + 1;
+      this->so_rank = char_rank + 1;
     } else if( char_rank == AMY || char_rank == BERNARDETTE || char_rank == PENNY){
-        this->so_rank = char_rank - 1;
+      this->so_rank = char_rank - 1;
     }else {
-        this->so_rank = -1;
+      this->with_so = false;
+      this->so_rank = -1;
     }
 }
 
 std::string Charecter::char_name(int id){
   switch (id)
   {
-  case SHELDON: return "Sheldon";
-  case AMY: return "Amy";
-  case HOWARD: return "Howard";
-  case BERNARDETTE: return "Bernadette";
-  case LEONARD: return "Leonard";
-  case PENNY: return "Penny";
-  case STUART: return "Stuart";
-  case KRIPKE: return "Kripke"; 
-  default: return "NULL";
+    case SHELDON: return "Sheldon";
+    case AMY: return "Amy";
+    case HOWARD: return "Howard";
+    case BERNARDETTE: return "Bernadette";
+    case LEONARD: return "Leonard";
+    case PENNY: return "Penny";
+    case STUART: return "Stuart";
+    case KRIPKE: return "Kripke"; 
+    default: return "NULL";
   }
 }
 
@@ -68,14 +69,15 @@ void OvenQueue::push(int char_rank){
     new_node = new Charecter(char_rank);
 
     pthread_mutex_lock(&this->lock);
-    this->_size++;
 
     if( this->_curr > -1 && new_node->so_rank == this->_curr){
         this->_next = char_rank;
     } else if(curr == NULL){
         this->_first = new_node;
         this->_agents[char_rank] = true;
+        this->_size++;
     } else {
+        this->_size++;
         while (curr != NULL) {
             if(curr->so_rank == char_rank){
                 curr->with_so = true;
@@ -90,6 +92,7 @@ void OvenQueue::push(int char_rank){
             last->next = new_node;
         }
     }
+
     pthread_mutex_unlock(&this->lock);
     return;
 }
@@ -205,6 +208,12 @@ void OvenQueue::remove(int target_rank){
 void OvenQueue::monitor(){
     int chars[3];
     int chars_count = 0;
+    
+    std::cout << std::endl;
+    std::cout << "Raj monitora a situação: " << std::endl;
+    std::cout << "size = " << this->size() << std::endl;
+    this->print();
+    std::cout << std::endl;
 
     if(this->inDeadlock()){
         pthread_mutex_lock(&this->lock);

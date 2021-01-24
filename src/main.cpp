@@ -53,9 +53,12 @@
 #define KRIPKE 7
 #define RAJ 8
 
-/* Global variable */
+/* Global variables */
+int num_executions = 1;
 int thread_count = 9;
 int turn = -1;
+int done = 0;
+
 pthread_mutex_t lock;
 pthread_mutex_t lock_queue;
 OvenQueue queue;
@@ -70,6 +73,11 @@ void *leave_oven(void* rank);
 
 int main(int argc, char* argv[]) {
   long thread;
+
+  if (argc == 2) {
+    num_executions = strtol(argv[1], NULL, 10);
+  }
+
   pthread_mutex_init(&lock, NULL); // Declara o lock para o forno
   pthread_mutex_init(&lock_queue, NULL); // Declara o lock para a fila
 
@@ -92,14 +100,25 @@ int main(int argc, char* argv[]) {
 
 void *enter_queue(void* rank) {
   long my_rank = (long) rank;
-  pthread_mutex_lock(&lock_queue);
-  // Personagem declara que quer utilizar o forno!
-  std::cout << Charecter::char_name(my_rank) << " quer usar o forno" << std::endl;
-  queue.push(my_rank);
-  if( turn == -1 && queue.size() == 1)
-    turn = queue.get_next();
-  pthread_mutex_unlock(&lock_queue);
-  await_turn((void*)my_rank);
+
+  for (int i = 0; i < num_executions; i++) { 
+    pthread_mutex_lock(&lock_queue);
+    // Personagem declara que quer utilizar o forno!
+    std::cout << Charecter::char_name(my_rank) << " quer usar o forno" << std::endl;
+    queue.push(my_rank);
+    done++;
+    std::cout << std::endl;
+    std::cout << "turn = " << turn << std::endl;
+    std::cout << "size = " << queue.size() << std::endl;
+    queue.print();
+    std::cout << std::endl;
+
+    if( turn == -1 && queue.size() == 1)
+      turn = queue.get_next();
+    pthread_mutex_unlock(&lock_queue);
+    await_turn((void*)my_rank);
+  }
+
   return NULL;
 }
 
@@ -128,7 +147,6 @@ void *use_oven(void* rank) {
 
   std::cout << Charecter::char_name(my_rank) << " começa a esquentar algo" << std::endl;
   sleep(1);
-  std::cout << Charecter::char_name(my_rank) << " chama o proximo" << std::endl;
 
   pthread_mutex_lock(&lock_queue);
   turn = queue.get_next();
@@ -153,9 +171,12 @@ void *leave_oven(void* rank){
 
 // Raj checa se há deadlock!
 void *check(void* rank) {
-  sleep(5);
-
-  queue.monitor();
+  while(done < num_executions * (thread_count - 1)) {
+    std::cout << "dones: " << done << std::endl;
+  //for (int i = 0; i < num_executions; i++) { 
+    sleep(5);
+    queue.monitor();
+  }
 
   return NULL;
 }

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <pthread.h>
-#include <vector>
+#include <oven-queue.hpp>
 
 /* Sheldon, Leonard e Howard compraram um micro-ondas juntos, que compartilham com 
  * Stuart e Kripke. Para decidir quem podia usar o forno, definiram o seguinte 
@@ -44,17 +44,7 @@
  *   Bernardette chega
  *   (Howard_bernardette tem preferência sobre Leonard+Penny)
  *
- * - Detalhes:
- *   Sempre que uma namorada estiver na fila, seu namorado também estará
- *   Stuart e Kripke podem acabar morrendo de inanição
- *   Após comer, os personagens voltam ao trabalho (sleep [3-6])
- *   Usar o forno gasta 1 segundo
- *
- *
  */
-
-#define SHELDON 0
-#define AMY 1
 #define HOWARD 2
 #define BERNARDETTE 3
 #define LEONARD 4
@@ -65,15 +55,18 @@
 
 /* Global variable */
 int thread_count = 9;
+int turn = -1;
 pthread_mutex_t lock;
 pthread_mutex_t lock_queue;
-std::vector<int> queue;
+OvenQueue queue;
 pthread_cond_t can_use[RAJ];
 bool in_use = false;
 
 void *enter_queue(void* rank);
 void *use_oven(void* rank);
 void *check(void* rank);
+void *await_turn(void* rank);
+void *leave_oven(void* rank);
 
 int main(int argc, char* argv[]) {
   long thread;
@@ -83,7 +76,7 @@ int main(int argc, char* argv[]) {
   // Declara as threads correspondentes a cada personagem (e.g., thread_handles[0] = Sheldon)
   pthread_t thread_handles[thread_count];
 
-  for (thread = 0; thread < thread_count - 1; thread++)
+  for (thread = thread_count - 2; thread >= 0; thread--)
     pthread_create(&thread_handles[thread], NULL, enter_queue, (void*) thread);
   
   // Cria thread correspondente ao Raj
@@ -96,64 +89,73 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
-int nxt = -1;
-
-
 
 void *enter_queue(void* rank) {
   long my_rank = (long) rank;
   pthread_mutex_lock(&lock_queue);
   // Personagem declara que quer utilizar o forno!
-  std::cout << my_rank << " quer usar o forno" << std::endl;
-  queue.push_back(my_rank);
-  if( queue.size() == 1){
-    nxt = my_rank;
-  }
+  std::cout << Charecter::char_name(my_rank) << " quer usar o forno" << std::endl;
+  queue.push(my_rank);
+  if( turn == -1 && queue.size() == 1)
+    turn = queue.get_next();
   pthread_mutex_unlock(&lock_queue);
+  await_turn((void*)my_rank);
+  return NULL;
+}
+
+void *await_turn(void* rank){
+  long my_rank = (long) rank;
+
+  pthread_mutex_lock(&lock); // Cria lock para utilizar o forno
+  while ( in_use || my_rank != turn)
+  {
+    pthread_cond_wait(&can_use[my_rank], &lock);
+  }
+  in_use = true;
   use_oven((void*)my_rank);
+  in_use = false; //Comida fica pronta
+  pthread_mutex_unlock(&lock); // Libera o forno
+  if(turn > -1 && turn < RAJ){
+    pthread_cond_signal(&can_use[turn]); //Chama o proximo
+  }
+  leave_oven((void*)my_rank);
+ 
   return NULL;
 }
 
 void *use_oven(void* rank) {
   long my_rank = (long) rank;
 
-  pthread_mutex_lock(&lock); // Cria lock para utilizar o forno
-  while ( in_use || my_rank != nxt)
-  {
-    pthread_cond_wait(&can_use[my_rank], &lock);
-  }
-  in_use = true;
-  std::cout << my_rank << " começa a esquentar algo" << std::endl;
+  std::cout << Charecter::char_name(my_rank) << " começa a esquentar algo" << std::endl;
   sleep(1);
-  int next = -1;
+  std::cout << Charecter::char_name(my_rank) << " chama o proximo" << std::endl;
 
   pthread_mutex_lock(&lock_queue);
-  queue.erase(queue.begin());
-  next = (int)queue.size() > 0 ? queue.front() : next;
+  turn = queue.get_next();
   pthread_mutex_unlock(&lock_queue);
 
-  nxt = next;
+  return NULL;
+}
 
-  std::cout<< "Prox: " << next << std::endl;
-  in_use = false; //Comida fica pronta
+void *leave_oven(void* rank){
+  long my_rank = (long) rank;
+
   int eat_time = 3 + (int)(drand48()*3);
-  int work_time = 3 + (int)(drand48()*3);
-  pthread_mutex_unlock(&lock); // Libera o forno
-  pthread_cond_signal(&can_use[next]); //Chama o proximo
-  std::cout << my_rank <<" Vai comer" << std::endl;  
+  std::cout << Charecter::char_name(my_rank) <<" vai comer" << std::endl;  
   sleep(eat_time); // Comendo!
-  std::cout << my_rank <<" Vai trabalhar" << std::endl;
-  sleep(work_time);
+
+  int work_time = 3 + (int)(drand48()*3);
+  std::cout << Charecter::char_name(my_rank) <<" Voltou para o trabalho" << std::endl;
+  sleep(work_time); // Trabalhando!
 
   return NULL;
 }
 
 // Raj checa se há deadlock!
 void *check(void* rank) {
-
-  std::cout  << "Raj verifica se há deadlock" << std::endl;
   sleep(5);
+
+  queue.monitor();
 
   return NULL;
 }
-

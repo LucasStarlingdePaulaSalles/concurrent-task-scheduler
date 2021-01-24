@@ -3,12 +3,12 @@
 Charecter::Charecter(int char_rank){
     this->rank = char_rank;
     this->next = NULL;
+    this->with_so = false;
     if(char_rank == SHELDON || char_rank == HOWARD || char_rank == LEONARD){
       this->so_rank = char_rank + 1;
     } else if( char_rank == AMY || char_rank == BERNARDETTE || char_rank == PENNY){
       this->so_rank = char_rank - 1;
     }else {
-      this->with_so = false;
       this->so_rank = -1;
     }
 }
@@ -81,6 +81,7 @@ void OvenQueue::push(int char_rank){
         while (curr != NULL) {
             if(curr->so_rank == char_rank){
                 curr->with_so = true;
+                this->_agents[char_rank] = true;
                 last = NULL;
                 break;
             }
@@ -149,9 +150,12 @@ int OvenQueue::get_next(){
 
 bool OvenQueue::inDeadlock(){
     return (
-        (this->_agents[0] || this->_agents[1]) &&
-        (this->_agents[2] || this->_agents[3]) &&
-        (this->_agents[4] || this->_agents[5]) 
+        ((this->_agents[0] && this->_agents[2] && this->_agents[4]) &&
+        (!this->_agents[1] && !this->_agents[3] && !this->_agents[5])) ||
+        ((!this->_agents[0] && !this->_agents[2] && !this->_agents[4]) &&
+        (this->_agents[1] && this->_agents[3] && this->_agents[5])) ||
+        ((this->_agents[0] && this->_agents[2] && this->_agents[4]) &&
+        (this->_agents[1] && this->_agents[3] && this->_agents[5]))    
     );
 }
 
@@ -207,7 +211,8 @@ void OvenQueue::remove(int target_rank){
 
 void OvenQueue::monitor(){
     int chars[3];
-    int chars_count = 0;
+    int curr_rank = -1;
+    Charecter *node = this->_first;
     
     std::cout << std::endl;
     std::cout << "Raj monitora a situação: " << std::endl;
@@ -218,12 +223,16 @@ void OvenQueue::monitor(){
     if(this->inDeadlock()){
         pthread_mutex_lock(&this->lock);
         std::cout << "Raj verifica que há deadlock, liberando: ";
-        for(int i = 0; i <= PENNY ; i++){
-            if(this->_agents[i]){
-                chars[chars_count] = i;
-                chars_count++;
-            }
-        }
+        while (node != NULL) {
+            curr_rank = node->rank; 
+            if(curr_rank == 0 || curr_rank == 1)
+                chars[0] = curr_rank;
+            if(curr_rank == 2 || curr_rank == 3)
+                chars[1] = curr_rank;
+            if(curr_rank == 4 || curr_rank == 5)
+                chars[2] = curr_rank;
+            node = node->next; 
+        } 
         srand((unsigned) time(0));
         int raj_choice = (rand() % 3);
         this->_next = chars[raj_choice];
@@ -233,4 +242,8 @@ void OvenQueue::monitor(){
     }else{
         std::cout << "Raj verifica que não há deadlock" << std::endl;
     }
+}
+
+void OvenQueue::change_turn(int turn_rank){
+    this->_curr = turn_rank;
 }

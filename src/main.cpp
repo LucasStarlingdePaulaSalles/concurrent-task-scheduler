@@ -105,6 +105,7 @@ void *enter_queue(void* rank) {
     pthread_mutex_lock(&lock_queue);
     // Personagem declara que quer utilizar o forno!
     std::cout << Charecter::char_name(my_rank) << " quer usar o forno" << std::endl;
+    queue.print();
     queue.push(my_rank);
     done++;
     std::cout << std::endl;

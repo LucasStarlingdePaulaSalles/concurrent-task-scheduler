@@ -36,6 +36,7 @@ class OvenQueue {
         ~OvenQueue();
         void monitor();
         void print();
+        void change_turn(int);
     private:
         int _size;
         int _next;

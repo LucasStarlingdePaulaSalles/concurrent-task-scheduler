@@ -31,5 +31,7 @@
 *.out
 *.app
 main
+test
+saida*
 
 .vscode

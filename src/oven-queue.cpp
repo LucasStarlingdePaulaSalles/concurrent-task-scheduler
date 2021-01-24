@@ -69,14 +69,9 @@ void OvenQueue::push(int char_rank){
 
     pthread_mutex_lock(&this->lock);
     this->_size++;
-    // std::cout << "push("<<Charecter::char_name(char_rank)<<"): "<< Charecter::char_name(this->_curr) << ", " << Charecter::char_name(this->_next) << std::endl;
 
     if( this->_curr > -1 && new_node->so_rank == this->_curr){
-        if(this->_next ==-1){
-            this->_next = char_rank;
-        }else{
-            std::cout << "PANIC ---------------------------------------------------" << std::endl;
-        }
+        this->_next = char_rank;
     } else if(curr == NULL){
         this->_first = new_node;
         this->_agents[char_rank] = true;
@@ -112,9 +107,6 @@ int OvenQueue::get_next(){
     while(this->_next == -1 && this->inDeadlock()){
         pthread_cond_wait(&this->raj,&this->lock);
     }
-    // if(this->_next == -1 && this->inDeadlock()){
-    //     monitor();
-    // }
 
     if(this->_next == -1){
         while(node_next != NULL){
@@ -144,7 +136,6 @@ int OvenQueue::get_next(){
         next_rank = this->_next;
         this->_next = -1;
         if(this->inDeadlock()){
-            std::cout << "remover node do:"<< Charecter::char_name(next_rank) << std::endl;
             remove(next_rank);
         }
     }

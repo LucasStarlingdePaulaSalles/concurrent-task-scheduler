@@ -44,12 +44,6 @@
  *   Bernardette chega
  *   (Howard_bernardette tem preferência sobre Leonard+Penny)
  *
- * - Detalhes:
- *   Sempre que uma namorada estiver na fila, seu namorado também estará
- *   Stuart e Kripke podem acabar morrendo de inanição
- *   Após comer, os personagens voltam ao trabalho (sleep [3-6])
- *   Usar o forno gasta 1 segundo
- *
  */
 #define HOWARD 2
 #define BERNARDETTE 3
@@ -71,6 +65,8 @@ bool in_use = false;
 void *enter_queue(void* rank);
 void *use_oven(void* rank);
 void *check(void* rank);
+void *await_turn(void* rank);
+void *leave_oven(void* rank);
 
 int main(int argc, char* argv[]) {
   long thread;
@@ -94,8 +90,6 @@ int main(int argc, char* argv[]) {
 }
 
 
-
-
 void *enter_queue(void* rank) {
   long my_rank = (long) rank;
   pthread_mutex_lock(&lock_queue);
@@ -105,11 +99,11 @@ void *enter_queue(void* rank) {
   if( turn == -1 && queue.size() == 1)
     turn = queue.get_next();
   pthread_mutex_unlock(&lock_queue);
-  use_oven((void*)my_rank);
+  await_turn((void*)my_rank);
   return NULL;
 }
 
-void *use_oven(void* rank) {
+void *await_turn(void* rank){
   long my_rank = (long) rank;
 
   pthread_mutex_lock(&lock); // Cria lock para utilizar o forno
@@ -118,28 +112,41 @@ void *use_oven(void* rank) {
     pthread_cond_wait(&can_use[my_rank], &lock);
   }
   in_use = true;
+  use_oven((void*)my_rank);
+  in_use = false; //Comida fica pronta
+  pthread_mutex_unlock(&lock); // Libera o forno
+  if(turn > -1 && turn < RAJ){
+    pthread_cond_signal(&can_use[turn]); //Chama o proximo
+  }
+  leave_oven((void*)my_rank);
+ 
+  return NULL;
+}
+
+void *use_oven(void* rank) {
+  long my_rank = (long) rank;
+
   std::cout << Charecter::char_name(my_rank) << " começa a esquentar algo" << std::endl;
   sleep(1);
   std::cout << Charecter::char_name(my_rank) << " chama o proximo" << std::endl;
-
 
   pthread_mutex_lock(&lock_queue);
   turn = queue.get_next();
   pthread_mutex_unlock(&lock_queue);
 
+  return NULL;
+}
 
-  // std::cout<< "Prox: " << Charecter::char_name(turn) << std::endl;
-  in_use = false; //Comida fica pronta
+void *leave_oven(void* rank){
+  long my_rank = (long) rank;
+
   int eat_time = 3 + (int)(drand48()*3);
-  int work_time = 3 + (int)(drand48()*3);
-  pthread_mutex_unlock(&lock); // Libera o forno
-  if(turn > -1 && turn < RAJ){
-    pthread_cond_signal(&can_use[turn]); //Chama o proximo
-  }
-  // std::cout << Charecter::char_name(my_rank) <<" Vai comer" << std::endl;  
+  std::cout << Charecter::char_name(my_rank) <<" vai comer" << std::endl;  
   sleep(eat_time); // Comendo!
-  // std::cout << Charecter::char_name(my_rank) <<" Vai trabalhar" << std::endl;
-  sleep(work_time);
+
+  int work_time = 3 + (int)(drand48()*3);
+  std::cout << Charecter::char_name(my_rank) <<" Voltou para o trabalho" << std::endl;
+  sleep(work_time); // Trabalhando!
 
   return NULL;
 }

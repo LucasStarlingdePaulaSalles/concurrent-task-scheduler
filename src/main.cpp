@@ -105,14 +105,14 @@ void *enter_queue(void* rank) {
     pthread_mutex_lock(&lock_queue);
     // Personagem declara que quer utilizar o forno!
     std::cout << Charecter::char_name(my_rank) << " quer usar o forno" << std::endl;
-    queue.print();
+    // queue.print();
     queue.push(my_rank);
     done++;
-    std::cout << std::endl;
-    std::cout << "turn = " << turn << std::endl;
-    std::cout << "size = " << queue.size() << std::endl;
-    queue.print();
-    std::cout << std::endl;
+    // std::cout << std::endl;
+    // std::cout << "turn = " << turn << std::endl;
+    // std::cout << "size = " << queue.size() << std::endl;
+    // queue.print();
+    // std::cout << std::endl;
 
     if( turn == -1 && queue.size() == 1)
       turn = queue.get_next();
@@ -173,7 +173,7 @@ void *leave_oven(void* rank){
 // Raj checa se há deadlock!
 void *check(void* rank) {
   while(done < num_executions * (thread_count - 1)) {
-    std::cout << "dones: " << done << std::endl;
+    // std::cout << "dones: " << done << std::endl;
   //for (int i = 0; i < num_executions; i++) { 
     sleep(5);
     queue.monitor();

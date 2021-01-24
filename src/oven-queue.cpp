@@ -214,11 +214,11 @@ void OvenQueue::monitor(){
     int curr_rank = -1;
     Charecter *node = this->_first;
     
-    std::cout << std::endl;
-    std::cout << "Raj monitora a situação: " << std::endl;
-    std::cout << "size = " << this->size() << std::endl;
-    this->print();
-    std::cout << std::endl;
+    // std::cout << std::endl;
+    // std::cout << "Raj monitora a situação: " << std::endl;
+    // std::cout << "size = " << this->size() << std::endl;
+    // this->print();
+    // std::cout << std::endl;
 
     if(this->inDeadlock()){
         pthread_mutex_lock(&this->lock);

@@ -62,7 +62,7 @@ int done = 0;
 pthread_mutex_t lock;
 pthread_mutex_t lock_queue;
 OvenQueue queue;
-pthread_cond_t can_use[RAJ];
+pthread_cond_t can_use[8];
 bool in_use = false;
 
 void *enter_queue(void* rank);
@@ -104,7 +104,7 @@ void *enter_queue(void* rank) {
   for (int i = 0; i < num_executions; i++) { 
     pthread_mutex_lock(&lock_queue);
     // Personagem declara que quer utilizar o forno!
-    std::cout << Charecter::char_name(my_rank) << " quer usar o forno" << std::endl;
+    std::cout << Character::char_name(my_rank) << " quer usar o forno" << std::endl;
     // queue.print();
     queue.push(my_rank);
     done++;
@@ -146,7 +146,7 @@ void *await_turn(void* rank){
 void *use_oven(void* rank) {
   long my_rank = (long) rank;
 
-  std::cout << Charecter::char_name(my_rank) << " começa a esquentar algo" << std::endl;
+  std::cout << Character::char_name(my_rank) << " começa a esquentar algo" << std::endl;
   sleep(1);
 
   pthread_mutex_lock(&lock_queue);
@@ -160,11 +160,11 @@ void *leave_oven(void* rank){
   long my_rank = (long) rank;
 
   int eat_time = 3 + (int)(drand48()*3);
-  std::cout << Charecter::char_name(my_rank) <<" vai comer" << std::endl;  
+  std::cout << Character::char_name(my_rank) <<" vai comer" << std::endl;  
   sleep(eat_time); // Comendo!
 
   int work_time = 3 + (int)(drand48()*3);
-  std::cout << Charecter::char_name(my_rank) <<" Voltou para o trabalho" << std::endl;
+  std::cout << Character::char_name(my_rank) <<" Voltou para o trabalho" << std::endl;
   sleep(work_time); // Trabalhando!
 
   return NULL;

@@ -1,6 +1,6 @@
 #include <oven-queue.hpp>
 
-Charecter::Charecter(int char_rank){
+Character::Character(int char_rank){
     this->rank = char_rank;
     this->next = NULL;
     this->with_so = false;
@@ -13,7 +13,7 @@ Charecter::Charecter(int char_rank){
     }
 }
 
-std::string Charecter::char_name(int id){
+std::string Character::char_name(int id){
   switch (id)
   {
     case SHELDON: return "Sheldon";
@@ -30,7 +30,7 @@ std::string Charecter::char_name(int id){
 
 void OvenQueue::print() 
 { 
-    Charecter *node = this->_first;
+    Character *node = this->_first;
 
     while (node != NULL) { 
         std::cout << node->rank << " ";
@@ -63,10 +63,10 @@ int OvenQueue::size(){
 }
 
 void OvenQueue::push(int char_rank){    
-    Charecter *new_node = NULL;
-    Charecter *last = NULL;
-    Charecter *curr = this->_first;
-    new_node = new Charecter(char_rank);
+    Character *new_node = NULL;
+    Character *last = NULL;
+    Character *curr = this->_first;
+    new_node = new Character(char_rank);
 
     pthread_mutex_lock(&this->lock);
 
@@ -99,8 +99,8 @@ void OvenQueue::push(int char_rank){
 }
 
 int OvenQueue::get_next(){
-    Charecter *node = this->_first;
-    Charecter *node_next = NULL;
+    Character *node = this->_first;
+    Character *node_next = NULL;
     if(node != NULL){
         node_next = node->next;
     }
@@ -182,8 +182,8 @@ bool OvenQueue::nextHasPriority(int next, int curr){
 }
 
 void OvenQueue::remove(int target_rank){
-    Charecter *curr = this->_first;
-    Charecter *last = NULL;
+    Character *curr = this->_first;
+    Character *last = NULL;
     this->_agents[target_rank] = false;
     while (curr != NULL) { 
         if(curr->rank == target_rank ){
@@ -212,7 +212,7 @@ void OvenQueue::remove(int target_rank){
 void OvenQueue::monitor(){
     int chars[3];
     int curr_rank = -1;
-    Charecter *node = this->_first;
+    Character *node = this->_first;
     
     // std::cout << std::endl;
     // std::cout << "Raj monitora a situação: " << std::endl;
@@ -236,7 +236,7 @@ void OvenQueue::monitor(){
         srand((unsigned) time(0));
         int raj_choice = (rand() % 3);
         this->_next = chars[raj_choice];
-        std::cout << Charecter::char_name(this->_next) << std::endl;
+        std::cout << Character::char_name(this->_next) << std::endl;
         pthread_mutex_unlock(&this->lock);
         pthread_cond_signal(&this->raj);
     }else{

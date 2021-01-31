@@ -16,14 +16,13 @@
 
 
 
-class Charecter {
+class Character {
     public:
         bool with_so;
         int rank;
         int so_rank;
-        Charecter *next;
-        Charecter(int);
-        void join_so();
+        Character *next;
+        Character(int);
         static std::string char_name(int);
 };
 
@@ -42,7 +41,7 @@ class OvenQueue {
         int _next;
         int _curr;
         bool _agents[CHARECTERS];
-        Charecter *_first;
+        Character *_first;
         void remove(int);
         void add(int);
         void addCouple();
